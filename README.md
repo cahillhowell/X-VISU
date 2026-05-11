@@ -4,7 +4,7 @@ A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, a
 
 ## Preview
 
-![X-VISU Screenshot](screenshots/1st working build.png)
+![X-VISU First Working Build](screenshots/1stbuild.png)
 
 ## Features
 
