@@ -6,6 +6,10 @@ A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, a
 
 ![X-VISU First Working Build](screenshots/1stbuild.png)
 
+## Try yourself!
+
+Currently the project is only in client-side. Download the files, and run natively. I am currently working to implement an working build that can be downloaded for easier use!
+
 ## Features
 
 - Audio-reactive circular visualizer
