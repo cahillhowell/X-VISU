@@ -2,6 +2,10 @@
 
 A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, and the Web Audio API.
 
+## Preview
+
+![X-VISU Screenshot](screenshots/1st working build.png)
+
 ## Features
 
 - Audio-reactive circular visualizer
