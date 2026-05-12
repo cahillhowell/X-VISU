@@ -52,15 +52,37 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-const geometry = new THREE.SphereGeometry(1.5, 64, 64);
+const geometry = new THREE.SphereGeometry(1.5, 32, 32);
 
 const material = new THREE.MeshBasicMaterial({
-  color: 0x00ff99,
+  color: 0x00ff66,
   wireframe: true,
 });
 
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
+
+// particle generation
+const particleCount = 800;
+const particleGeometry = new THREE.BufferGeometry();
+const particlePositions = new Float32Array(particleCount * 3);
+
+for (let i = 0; i < particleCount * 3; i++) {
+  particlePositions[i] = (Math.random() - 0.5) * 20;
+}
+
+particleGeometry.setAttribute(
+  "position",
+  new THREE.BufferAttribute(particlePositions, 3)
+);
+
+const particleMaterial = new THREE.PointsMaterial({
+  color: 0x00ff99,
+  size: 0.03,
+});
+
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particles);
 
 // Audio setup
 audioPlayer.addEventListener("play", () => {
@@ -85,6 +107,7 @@ function animate() {
   requestAnimationFrame(animate);
 
   let bassLevel = 1;
+  let bass = 0;
 
   if (analyser && dataArray) {
     analyser.getByteFrequencyData(dataArray);
@@ -95,8 +118,14 @@ function animate() {
 
   sphere.scale.set(bassLevel, bassLevel, bassLevel);
 
-  sphere.rotation.x += 0.005;
-  sphere.rotation.y += 0.01;
+  const time = Date.now() * 0.001;
+
+  sphere.rotation.x += 0.002 + bass * 0.00005;
+  sphere.rotation.y = Math.sin(time * 0.5) * 1.5;
+  sphere.rotation.z = Math.cos(time * 0.3) * 1.5;
+
+  particles.rotation.y += 0.0008;
+  particles.rotation.x += 0.0003;
 
   renderer.render(scene, camera);
 }
