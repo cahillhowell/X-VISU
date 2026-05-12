@@ -1,0 +1,29 @@
+{
+  "name": "x-visu",
+  "version": "1.0.0",
+  "description": "A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, and the Web Audio API.",
+  "main": "app.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cahillhowell/x-visu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cahillhowell/x-visu/issues"
+  },
+  "homepage": "https://github.com/cahillhowell/x-visu#readme",
+  "dependencies": {
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "vite": "^8.0.12"
+  }
+}

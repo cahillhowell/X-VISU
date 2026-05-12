@@ -1,20 +1,30 @@
+import * as THREE from "three";
+
 const fileInput = document.getElementById("audio-file");
 const audioPlayer = document.getElementById("audio-player");
 const volumeControl = document.getElementById("volumeControl");
+const canvas = document.getElementById("visualizer");
 
-// User chooses file
+const playPauseBtn = document.getElementById("play-pause");
+const currentTimeText = document.getElementById("current-time");
+const durationText = document.getElementById("duration");
+const progressBar = document.getElementById("progress-bar");
+const fileName = document.getElementById("file-name");
+
+let audioContext;
+let analyser;
+let source;
+let dataArray;
+
+// File selection
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-  const fileName = document.getElementById("file-name");
 
-  if (!file) {
-    return;
-  }
+  if (!file) return;
 
   fileName.textContent = file.name;
 
   const fileURL = URL.createObjectURL(file);
-
   audioPlayer.src = fileURL;
   audioPlayer.load();
 });
@@ -23,32 +33,36 @@ volumeControl.addEventListener("input", () => {
   audioPlayer.volume = volumeControl.value;
 });
 
-//canvas setup and attributes
-const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
-const playPauseBtn = document.getElementById("play-pause");
-const currentTimeText = document.getElementById("current-time");
-const durationText = document.getElementById("duration");
-const progressBar = document.getElementById("progress-bar");
+// Three.js setup
+const scene = new THREE.Scene();
 
-canvas.width = window.innerWidth;
-canvas.width = canvas.clientWidth;
-canvas.height = canvas.clientHeight;
+const camera = new THREE.PerspectiveCamera(
+  75,
+  canvas.clientWidth / canvas.clientHeight,
+  0.1,
+  1000
+);
 
-ctx.fillStyle = "black";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+camera.position.z = 5;
 
-ctx.fillStyle = "lime";
-ctx.fillRect(50, 50, 100, 100);
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: true,
+});
 
-let audioContext;
-let analyser;
-let source;
-let dataArray;
-let rotation = 0;
-let gridOffset = 0;
+renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-//audio info
+const geometry = new THREE.SphereGeometry(1.5, 64, 64);
+
+const material = new THREE.MeshBasicMaterial({
+  color: 0x00ff99,
+  wireframe: true,
+});
+
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
+
+// Audio setup
 audioPlayer.addEventListener("play", () => {
   if (!audioContext) {
     audioContext = new AudioContext();
@@ -63,114 +77,44 @@ audioPlayer.addEventListener("play", () => {
 
     const bufferLength = analyser.frequencyBinCount;
     dataArray = new Uint8Array(bufferLength);
-
-    animate();
   }
 });
 
-//background visuals
-function drawWireframeBackground() {
-  const spacing = 100;
-
-  ctx.strokeStyle = "rgba(0,255,0,0.2)";
-  ctx.lineWidth = 1;
-
-  // X lines
-  for (let x = -canvas.width; x < canvas.width * 2; x += spacing) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x + canvas.width, canvas.height);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(x + canvas.width, 0);
-    ctx.lineTo(x, canvas.height);
-    ctx.stroke();
-  }
-
-  // horizontal lines
-  for (let i = 0; i < 20; i++) {
-    const y = (canvas.height * 0.5 + i * 30 + gridOffset) % canvas.height;
-
-    const scale = 1 + i * 0.08;
-
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2 - canvas.width * scale, y);
-    ctx.lineTo(canvas.width / 2 + canvas.width * scale, y);
-    ctx.stroke();
-  }
-}
-
-//visual animations
+// Animation loop
 function animate() {
   requestAnimationFrame(animate);
 
-  analyser.getByteFrequencyData(dataArray);
+  let bassLevel = 1;
 
-  ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (analyser && dataArray) {
+    analyser.getByteFrequencyData(dataArray);
 
-  drawWireframeBackground();
-
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const radius = 90;
-
-  let bass = dataArray[2] || 0;
-  let orbRadius = 40 + bass * 0.25;
-  rotation += 0.002;
-  gridOffset += 2;
-
-  const gradient = ctx.createRadialGradient(
-    centerX,
-    centerY,
-    5,
-    centerX,
-    centerY,
-    orbRadius,
-  );
-
-  gradient.addColorStop(0, "white");
-  gradient.addColorStop(0.2, "lime");
-  gradient.addColorStop(1, "rgba(0, 255, 0, 0)");
-
-  ctx.fillStyle = gradient;
-
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, orbRadius, 0, Math.PI * 2);
-  ctx.fill();
-
-  for (let i = 0; i < dataArray.length; i++) {
-    const usableBins = Math.floor(dataArray.length * 0.7);
-    const dataIndex = Math.floor((i / dataArray.length) * usableBins);
-    const value = dataArray[dataIndex];
-
-    const barHeight = value * 0.8;
-
-    const angle = (i / dataArray.length) * Math.PI * 2 + rotation;
-
-    const x1 = centerX + Math.cos(angle) * radius;
-    const y1 = centerY + Math.sin(angle) * radius;
-
-    const x2 = centerX + Math.cos(angle) * (radius + barHeight);
-    const y2 = centerY + Math.sin(angle) * (radius + barHeight);
-
-    ctx.strokeStyle = "lime";
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
+    const bass = dataArray[2] || 0;
+    bassLevel = 1 + bass / 255;
   }
+
+  sphere.scale.set(bassLevel, bassLevel, bassLevel);
+
+  sphere.rotation.x += 0.005;
+  sphere.rotation.y += 0.01;
+
+  renderer.render(scene, camera);
 }
 
+animate();
+
+// Resize handling
 window.addEventListener("resize", () => {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(width, height);
 });
 
-//audio controls adjusting
+// Audio controls
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
@@ -202,6 +146,6 @@ audioPlayer.addEventListener("timeupdate", () => {
 
 progressBar.addEventListener("input", () => {
   const seekTime = (progressBar.value / 100) * audioPlayer.duration;
-
+  
   audioPlayer.currentTime = seekTime;
 });
