@@ -6,6 +6,8 @@ the original xbox console.
 
 Public build is now available. Please be aware, the application requires to you have available .mp3 files
 in order to function. I have included some copyright free files within this repo for you to test the application.
+You will find them in the public folder.
+
 All feedback welcome!
 
 ## Preview - Version 1.0.0
