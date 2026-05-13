@@ -7,41 +7,72 @@
 
     <title>X-VISU</title>
   </head>
+
   <body>
-    <main class="app">
-      <h1>X-VISU</h1>
-      <p>
-        Welcome to X-VISU<br />
-        Select an audio file to begin
-      </p>
-      <section class="player">
-        <div class="file-row">
-          <label for="audio-file" class="file-button">Choose Track</label>
-          <span id="file-name">No track selected</span>
-          <input id="audio-file" type="file" accept="audio/*" />
-        </div>
+    <main class="app-shell">
+      <header class="top-bar">
+        <h1>X-VISU</h1>
+        <p>Designed by Cahill Howell</p>
+      </header>
 
-        <audio id="audio-player"></audio>
-        <div class="custom-controls">
-          <button id="play-pause">▶</button>
-          <span id="current-time">0:00</span>
-          <input id="progress-bar" type="range" min="0" max="100" value="0" />
-          <span id="duration">0:00</span>
-        </div>
+      <section class="dashboard">
+        <section class="visual-panel">
+          <div class="panel-title">Visualizer</div>
+          <canvas id="visualizer"></canvas>
+        </section>
 
-        <label for="volumeControl">Volume</label>
-        <input
-          type="range"
-          id="volumeControl"
-          min="0"
-          max="1"
-          step="0.01"
-          value="1"
-        />
+        <section class="control-panel">
+          <div class="panel-title">Tracks</div>
+
+          <div class="file-row">
+            <label for="audio-file" class="file-button">Add Tracks</label>
+            <input id="audio-file" type="file" accept="audio/*" multiple />
+          </div>
+
+          <ul id="playlist" class="playlist">
+            <li class="empty-track">No tracks loaded</li>
+          </ul>
+
+          <audio id="audio-player"></audio>
+
+          <div class="now-playing">
+            <span>Now Playing</span>
+            <strong id="file-name">No track selected</strong>
+          </div>
+
+          <div class="custom-controls">
+            <button id="prev-track" type="button">⏮</button>
+            <button id="play-pause" type="button">▶</button>
+            <button id="next-track" type="button">⏭</button>
+          </div>
+
+          <div class="time-row">
+            <span id="current-time">0:00</span>
+            <input
+              id="progress-bar"
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+            />
+            <span id="duration">0:00</span>
+          </div>
+
+          <div class="volume-row">
+            <label for="volumeControl">Volume</label>
+            <input
+              type="range"
+              id="volumeControl"
+              min="0"
+              max="1"
+              step="0.01"
+              value="1"
+            />
+          </div>
+        </section>
       </section>
-
-      <canvas id="visualizer"></canvas>
     </main>
+
     <script type="module" src="app.js"></script>
   </body>
 </html>
