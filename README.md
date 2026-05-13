@@ -33,3 +33,4 @@ All feedback welcome!
 
 - Requires more creativity
 - Always in progress
+- Demo Playlist option
