@@ -1,10 +1,16 @@
 # X-VISU
 
 A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, and the Web Audio API.
+Inspired by my original xbox console. I attempted to make something in relativity to the media player within
+the original xbox console.
 
-## Preview - Version 0.5.0
+Public build is now available. Please be aware, the application requires to you have available .mp3 files
+in order to function. I have included some copyright free files within this repo for you to test the application.
+All feedback welcome!
 
-![X-VISU First Working Build](screenshots/version0.5.0.png)
+## Preview - Version 1.0.0
+
+![X-VISU First Working Build](screenshots/version1.0.0.png)
 
 ## Features
 
@@ -23,4 +29,5 @@ A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, a
 
 ## Future Plans
 
-- Desktop application build
+- Requires more creativity
+- Always in progress
