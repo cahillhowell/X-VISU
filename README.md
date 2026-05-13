@@ -9,9 +9,9 @@ A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, a
 ## Features
 
 - Audio-reactive circular visualizer
-- Dynamic wireframe background
-- Custom playback controls
-- Glowing orb animation
+- Dynamic particle background
+- Audio controls
+- Responive visual animation
 - Real-time frequency analysis
 
 ## Tech Stack
@@ -23,8 +23,4 @@ A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, a
 
 ## Future Plans
 
-- Electron desktop build
-- Three.js 3D renderer
-- Playlist support
-- Particle systems
-- Visualizer presets
+- Desktop application build
