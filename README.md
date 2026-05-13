@@ -2,7 +2,7 @@
 
 A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, and the Web Audio API.
 
-## Preview - Version 0.2.0
+## Preview - Version 0.5.0
 
 ![X-VISU First Working Build](screenshots/version0.5.0.png)
 
