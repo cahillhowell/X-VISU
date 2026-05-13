@@ -63,7 +63,7 @@ const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
 // particle generation
-const particleCount = 800;
+const particleCount = 1600;
 const particleGeometry = new THREE.BufferGeometry();
 const particlePositions = new Float32Array(particleCount * 3);
 
@@ -106,15 +106,22 @@ audioPlayer.addEventListener("play", () => {
 function animate() {
   requestAnimationFrame(animate);
 
-  let bassLevel = 1;
   let bass = 0;
+  let mids = 0;
+  let highs = 0;
 
   if (analyser && dataArray) {
     analyser.getByteFrequencyData(dataArray);
 
-    const bass = dataArray[2] || 0;
-    bassLevel = 1 + bass / 255;
+  bass = dataArray[2] || 0;
+  mids = dataArray[20] || 0;
+  highs = dataArray[60] || 0;
   }
+
+  const averageLevel = (bass + mids + highs) / 3;
+  const audioLevel = averageLevel / 255;
+
+  const bassLevel = 1 + audioLevel * 0.6;
 
   sphere.scale.set(bassLevel, bassLevel, bassLevel);
 
