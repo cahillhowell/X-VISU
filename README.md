@@ -4,9 +4,11 @@ A retro console-inspired music visualizer built with JavaScript, HTML5 Canvas, a
 Inspired by my original xbox console. I attempted to make something in relativity to the media player within
 the original xbox console.
 
-Public build is now available. Please be aware, the application requires to you have available .mp3 files
+Public build is now available. Please be aware, the application requires to you have available audio files
 in order to function. I have included some copyright free files within this repo for you to test the application.
 You will find them in the public folder.
+
+Currently supporting .mp3, and .webm files!
 
 All feedback welcome!
 
